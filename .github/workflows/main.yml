@@ -44,6 +44,5 @@ jobs:
         env: 
           reg: ${{ secrets.REGISTRY }}
         run: |
-          docker tag test:$(git log -1 --pretty=%h) "$reg":$(git log -1 --pretty=%h) &&
-          docker images
-          docker push "$env:reg":$(git log -1 --pretty=%h) 
+          docker tag test:$(git log -1 --pretty=%h) ajay2012/py-demo:$(git log -1 --pretty=%h) &&
+          docker push ajay2012/py-demo:$(git log -1 --pretty=%h) 
