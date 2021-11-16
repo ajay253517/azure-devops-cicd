@@ -33,3 +33,17 @@ jobs:
       - name: Test
         run:
           docker ps -a && curl localhost:8080
+      
+      - name: Login to dockerhub 
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_PASSWORD }}
+          password: ${{ secrets.DOCKER_USERNAME }}
+          registry: ${{ secrets.REGISTRY }}
+      
+      - name: Push to docker-registry 
+        env: 
+          reg: ${{ secrets.REGISTRY }}
+        run: 
+          docker tag test:$(git log -1 --pretty=%h) "$env:reg":$(git log -1 --pretty=%h) &&
+          docker push "$env:reg":$(git log -1 --pretty=%h) 
