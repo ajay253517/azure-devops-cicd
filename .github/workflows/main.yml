@@ -27,6 +27,6 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Build and test
         run: |
-          docker build -t test:$(git log -1 --pretty=%h)
+          docker build -t test:$(git log -1 --pretty=%h) .
           docker run -d -p 8080:8080 test:$(git log -1 --pretty=%h)
           curl localhost:8080
