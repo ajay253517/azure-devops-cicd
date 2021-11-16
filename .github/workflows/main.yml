@@ -20,31 +20,30 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      # # Runs a single command using the runners shell
-      # - name: Runing pylint 
-      #   run: docker run --rm -v ${PWD}:/tmp python:slim bash /tmp/ci-scripts/py-linit.sh
+      # Runs a single command using the runners shell
+      - name: Runing pylint 
+        run: docker run --rm -v ${PWD}:/tmp python:slim bash /tmp/ci-scripts/py-linit.sh
 
-      # # Runs a set of commands using the runners shell
-      # - name: Build 
-      #   run: |
-      #     docker build -t test:$(git log -1 --pretty=%h) . &&
-      #     docker run -d -p 8080:8080 test:$(git log -1 --pretty=%h) 
+      # Runs a set of commands using the runners shell
+      - name: Build 
+        run: |
+          docker build -t test:$(git log -1 --pretty=%h) . &&
+          docker run -d -p 8080:8080 test:$(git log -1 --pretty=%h) 
       
-      # - name: Test
-      #   run:
-      #     docker ps -a && curl localhost:8080
+      - name: Test
+        run:
+          docker ps -a && curl localhost:8080
       
-      # - name: Login to dockerhub 
-      #   uses: docker/login-action@v1
-      #   with:
-      #     username: ${{ secrets.DOCKER_HUB_USERNAME }}
-      #     password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      - name: Login to dockerhub 
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
       
       - name: Push to docker-registry 
         env: 
           reg: ${{ secrets.REGISTRY }}
         run: |
-          echo "$reg" 
-          # docker tag test:$(git log -1 --pretty=%h) "$env:reg":$(git log -1 --pretty=%h) &&
-          # docker images
-          # #docker push "$env:reg":$(git log -1 --pretty=%h) 
+          docker tag test:$(git log -1 --pretty=%h) "$reg":$(git log -1 --pretty=%h) &&
+          docker images
+          docker push "$env:reg":$(git log -1 --pretty=%h) 
