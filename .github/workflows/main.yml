@@ -39,7 +39,6 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_PASSWORD }}
           password: ${{ secrets.DOCKER_USERNAME }}
-          registry: ${{ secrets.REGISTRY }}
       
       - name: Push to docker-registry 
         env: 
